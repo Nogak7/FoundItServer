@@ -1,10 +1,10 @@
 ﻿Use master
 
-Create Database FoundtItDB
+Create Database FoundItDB
 
 Go
 
-Use FoundtItDB
+Use FoundItDB
 
 Go
 
