@@ -16,4 +16,10 @@
     <ProjectReference Include="..\FountItBL\FountItBL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTS\" />
+    <Folder Include="DatabaseScript\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>
