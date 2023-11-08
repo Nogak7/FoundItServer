@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DatabaseScript\**" />
+    <Content Remove="DatabaseScript\**" />
+    <EmbeddedResource Remove="DatabaseScript\**" />
+    <None Remove="DatabaseScript\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.12" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.Text.Json" Version="7.0.3" />
@@ -18,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="DTS\" />
-    <Folder Include="DatabaseScript\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

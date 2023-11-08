@@ -6,6 +6,12 @@ using Microsoft.Extensions.Options;
 
 
 var builder = WebApplication.CreateBuilder(args);
+#region DBCONTEXT
+//load connection string
+string connection = builder.Configuration.GetConnectionString("FoundItDBS"); 
+//Add DBContext
+builder.Services.AddDbContext<FoundItDbContext>(options=>options.UseSqlServer(connection));
+#endregion
 
 // Add services to the container.
 #region Json Hendeling
@@ -59,9 +65,3 @@ app.MapControllers();
 
 app.Run();
 
-#region DBCONTEXT
-//load connection string
-string connection = builder.Configuration.GetConnectionString("FoundItDBS"); 
-//Add DBContext
-builder.Services.AddDbContext<FoundItDbContext>(options=>options.UseSqlServer(connection));
-#endregion
