@@ -23,7 +23,28 @@ namespace FoundItServer.Controllers
         {
             return "this is Noga Server";
         }
+        
+       [Route ("Register")]
+       [HttpPost]
+        public async Task<ActionResult<User>> RegisterAsync([FromBody] User user)
+        {
+            try
+            {
+                bool isEmailExist = context.Users.Any(u => (u.Email == user.Email)||(u.UserName == user.UserName));
+                if (isEmailExist == false)
+                {
+                    context.Users.Add(user);
+                    context.SaveChanges();
+                    return Ok(user);
+                }
+                else
+                    return Conflict(user);
+            }
+            catch (Exception ex) { }
+            return BadRequest();
+        }
 
 #endregion
     }
+    
 }

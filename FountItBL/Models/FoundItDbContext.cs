@@ -25,7 +25,7 @@ public partial class FoundItDbContext : DbContext
     {
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC27A6B9E924");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC278E264803");
 
             entity.HasIndex(e => e.Email, "UC_Email").IsUnique();
 
@@ -33,7 +33,8 @@ public partial class FoundItDbContext : DbContext
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.FirstName).HasMaxLength(30);
             entity.Property(e => e.LastName).HasMaxLength(30);
-            entity.Property(e => e.UserPswd).HasMaxLength(30);
+            entity.Property(e => e.Pasword).HasMaxLength(30);
+            entity.Property(e => e.UserName).HasMaxLength(30);
         });
 
         OnModelCreatingPartial(modelBuilder);
