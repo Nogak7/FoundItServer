@@ -43,8 +43,27 @@ namespace FoundItServer.Controllers
             catch (Exception ex) { }
             return BadRequest();
         }
-
-#endregion
+        [Route("LogIn")]
+        [HttpPost]
+        public async Task<ActionResult<User>> LogInAsync([FromBody] User user)
+        {
+            try
+            {
+                bool IsUserExist = context.Users.Any(u => (u.UserName == user.UserName));
+                if (IsUserExist)
+                {
+                    User user1 = context.Users.Where( u=> u.UserName == user.UserName).FirstOrDefault();
+                    bool IsUserMatchPassword = (user.Pasword == user1.Pasword);
+                    if (IsUserMatchPassword)                                         
+                        return Ok(user);                    
+                }
+                else
+                    return Conflict(user);
+            }
+            catch (Exception ex) { }
+            return BadRequest();
+        }
+        #endregion
     }
     
 }
