@@ -45,7 +45,7 @@ namespace FoundItServer.Controllers
         }
         [Route("LogIn")]
         [HttpPost]
-        public async Task<ActionResult<User>> LogInAsync([FromBody] User user)
+        public async Task<ActionResult<User>> LogInAsync([FromBody] LoginDto user)
         {
             try
             {
