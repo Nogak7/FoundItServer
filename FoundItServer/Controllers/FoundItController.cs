@@ -1,6 +1,7 @@
 ﻿using FountItBL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using FoundItServer.DTO;
 
 namespace FoundItServer.Controllers
 {
