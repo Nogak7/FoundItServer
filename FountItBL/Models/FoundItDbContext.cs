@@ -15,6 +15,16 @@ public partial class FoundItDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Community> Communities { get; set; }
+
+    public virtual DbSet<CommunityMember> CommunityMembers { get; set; }
+
+    public virtual DbSet<Post> Posts { get; set; }
+
+    public virtual DbSet<PostComment> PostComments { get; set; }
+
+    public virtual DbSet<PostStatus> PostStatuses { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -23,9 +33,94 @@ public partial class FoundItDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Community>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC0746076F14");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Location).HasMaxLength(250);
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .HasColumnName("[Name]");
+
+            entity.HasOne(d => d.ManagerNavigation).WithMany(p => p.Communities)
+                .HasForeignKey(d => d.Manager)
+                .HasConstraintName("FK_CommunitysToUsers");
+        });
+
+        modelBuilder.Entity<CommunityMember>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC07798BC2E2");
+
+            entity.ToTable("CommunityMember");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            entity.HasOne(d => d.CommunityNavigation).WithMany(p => p.CommunityMembers)
+                .HasForeignKey(d => d.Community)
+                .HasConstraintName("FK_CommunityMember_Communitiys");
+
+            entity.HasOne(d => d.UserNavigation).WithMany(p => p.CommunityMembers)
+                .HasForeignKey(d => d.User)
+                .HasConstraintName("FK_CommunityMember_ToUsers");
+        });
+
+        modelBuilder.Entity<Post>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Post__3214EC07C2C69309");
+
+            entity.ToTable("Post");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Context).HasMaxLength(500);
+            entity.Property(e => e.CreatingDate).HasColumnType("datetime");
+            entity.Property(e => e.Location).HasMaxLength(250);
+            entity.Property(e => e.Picture).HasMaxLength(200);
+            entity.Property(e => e.Theme).HasMaxLength(50);
+
+            entity.HasOne(d => d.CreatorNavigation).WithMany(p => p.Posts)
+                .HasForeignKey(d => d.Creator)
+                .HasConstraintName("FK_Post_User");
+
+            entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Posts)
+                .HasForeignKey(d => d.Status)
+                .HasConstraintName("FK_PostToPostStatus");
+        });
+
+        modelBuilder.Entity<PostComment>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__PostComm__3214EC07968118DD");
+
+            entity.ToTable("PostComment");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Date).HasColumnType("datetime");
+            entity.Property(e => e.Postcomment1).HasColumnName("Postcomment");
+
+            entity.HasOne(d => d.PostNavigation).WithMany(p => p.PostComments)
+                .HasForeignKey(d => d.Post)
+                .HasConstraintName("FK_PostComment_Post");
+
+            entity.HasOne(d => d.Postcomment1Navigation).WithMany(p => p.InversePostcomment1Navigation)
+                .HasForeignKey(d => d.Postcomment1)
+                .HasConstraintName("FK_PostComment_PostComment");
+        });
+
+        modelBuilder.Entity<PostStatus>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__PostStat__3214EC07578CBB62");
+
+            entity.ToTable("PostStatus");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Poststatus1)
+                .HasMaxLength(15)
+                .HasColumnName("Poststatus");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC278E264803");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC278E5EE5CD");
 
             entity.HasIndex(e => e.Email, "UC_Email").IsUnique();
 
