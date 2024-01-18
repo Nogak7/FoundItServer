@@ -34,7 +34,7 @@ CONSTRAINT UC_Email UNIQUE(Email)
 
 Go
 
-CREATE TABLE [dbo].[Communitys]
+CREATE TABLE [dbo].[Communities]
 (
 	[Id] INT NOT NULL PRIMARY KEY, 
     [Manager] INT NULL, 
