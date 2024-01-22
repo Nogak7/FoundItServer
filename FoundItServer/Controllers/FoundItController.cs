@@ -65,6 +65,31 @@ namespace FoundItServer.Controllers
             catch (Exception ex) { }
             return BadRequest();
         }
+
+        [Route("CreateNewPost")]
+        [HttpPost]
+        public async Task<ActionResult<User>> CreateNewPostAsync([FromBody] Post post)
+        {
+            try
+            {
+                // בדיקות שצ ריך
+                /*
+                bool isEmailExist = context.Users.Any(u => (u.Email == user.Email) || (u.UserName == user.UserName));
+                if (isEmailExist == false)
+                {
+                    context.Users.Add(user);
+                    context.SaveChanges();
+                    return Ok(user);
+                }
+                else
+                    return Conflict(user);
+               */ 
+            }
+                
+            catch (Exception ex) { }
+            return BadRequest();
+        }
+
         #endregion
     }
     
