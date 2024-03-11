@@ -73,8 +73,9 @@ namespace FoundItServer.Controllers
         {
             try
             {
-                
-                
+                context.Posts.Add(post);
+                context.SaveChanges();
+
             }
                 
             catch (Exception ex) { }
