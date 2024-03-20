@@ -35,7 +35,7 @@ public partial class FoundItDbContext : DbContext
     {
         modelBuilder.Entity<Community>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC0746076F14");
+            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC07D856CE7B");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Location).HasMaxLength(250);
@@ -50,7 +50,7 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<CommunityMember>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC07798BC2E2");
+            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC077740F74A");
 
             entity.ToTable("CommunityMember");
 
@@ -67,7 +67,7 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<Post>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Post__3214EC07C2C69309");
+            entity.HasKey(e => e.Id).HasName("PK__Post__3214EC0708EBE79B");
 
             entity.ToTable("Post");
 
@@ -89,7 +89,7 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<PostComment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PostComm__3214EC07968118DD");
+            entity.HasKey(e => e.Id).HasName("PK__PostComm__3214EC076788FD22");
 
             entity.ToTable("PostComment");
 
@@ -108,19 +108,19 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<PostStatus>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PostStat__3214EC07578CBB62");
+            entity.HasKey(e => e.Id).HasName("PK__PostStat__3214EC079FCDD118");
 
             entity.ToTable("PostStatus");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Poststatus1)
-                .HasMaxLength(15)
+                .HasMaxLength(250)
                 .HasColumnName("Poststatus");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC278E5EE5CD");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC27BBF30AF6");
 
             entity.HasIndex(e => e.Email, "UC_Email").IsUnique();
 

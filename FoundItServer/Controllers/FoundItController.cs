@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FoundItServer.DTO;
 using System.Text.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FoundItServer.Controllers
 {
@@ -69,12 +70,26 @@ namespace FoundItServer.Controllers
 
         [Route("CreateNewPost")]
         [HttpPost]
-        public async Task<ActionResult<User>> CreateNewPostAsync([FromBody] Post post)
+        public async Task<ActionResult<Post>> CreateNewPostAsync(IFormFile file, [FromForm] string post)
         {
             try
             {
-                context.Posts.Add(post);
+                var p=JsonSerializer.Deserialize<PostDTO>(post);
+                p.Picture = string.Empty;
+                context.Posts.Add(p.Convert());
                 context.SaveChanges();
+
+                if (file == null || file.Length == 0)
+                    return BadRequest("no image file");
+                string filename = $"{p.Id}_postImage.jpg";
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/Images",filename);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                p.Picture = filename;
+                return Ok(p);
+
 
             }
                 

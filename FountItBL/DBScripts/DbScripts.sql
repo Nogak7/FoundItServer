@@ -53,26 +53,26 @@ CREATE TABLE [dbo].[CommunityMember] (
     CONSTRAINT [FK_CommunityMember_ToUsers] FOREIGN KEY ([User]) REFERENCES [Users]([Id])
 );
 GO
-CREATE TABLE [dbo].[PostStatus]
-(
-	[Id] INT NOT NULL PRIMARY KEY, 
-    [Poststatus] NVARCHAR(15) NULL
-)
-GO
-CREATE TABLE [dbo].[Post]
-(
-	[Id] INT NOT NULL PRIMARY KEY, 
-    [Theme] NVARCHAR(50) NULL, 
-    [Context] NVARCHAR(500) NULL, 
-    [FoundItem] BIT NULL, 
-    [Picture] NVARCHAR(200) NULL, 
-    [Creator] INT NULL, 
-    [CreatingDate] DATETIME NULL, 
-    [Location] NVARCHAR(250) NULL, 
-    [Status] INT NULL, 
-    CONSTRAINT [FK_PostToPostStatus] FOREIGN KEY ([Status]) REFERENCES [PostStatus]([Id]), 
-    CONSTRAINT [FK_Post_User] FOREIGN KEY ([Creator]) REFERENCES [Users]([Id])
-)
+CREATE TABLE [dbo].[PostStatus] (
+    [Id]         INT           NOT NULL,
+    [Poststatus] NVARCHAR (250) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);GO
+
+CREATE TABLE [dbo].[Post] (
+    [Id]           INT   IDENTITY(1,1)         NOT NULL,
+    [Theme]        NVARCHAR (50)  NULL,
+    [Context]      NVARCHAR (500) NULL,
+    [FoundItem]    BIT            NULL,
+    [Picture]      NVARCHAR (200) NULL,
+    [Creator]      INT            NULL,
+    [CreatingDate] DATETIME       NULL,
+    [Location]     NVARCHAR (250) NULL,
+    [Status]       INT            NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_PostToPostStatus] FOREIGN KEY ([Status]) REFERENCES [dbo].[PostStatus] ([Id]),
+    CONSTRAINT [FK_Post_User] FOREIGN KEY ([Creator]) REFERENCES [dbo].[Users] ([ID])
+);
 GO
 CREATE TABLE [dbo].[PostComment]
 (
@@ -90,3 +90,9 @@ GO
 SET IDENTITY_INSERT [dbo].[Users] ON
 INSERT INTO [dbo].[Users] ([ID], [Email], [FirstName], [LastName], [Pasword], [UserName]) VALUES (1, N'tsss@hhh.com', N'Tal', N'ggg', N'234', N'fggg')
 SET IDENTITY_INSERT [dbo].[Users] OFF
+
+
+INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (1, N'Waiting For approval')
+INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (2, N'Not Found Yet')
+INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (3, N'Verification')
+INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (4, N'Found')
