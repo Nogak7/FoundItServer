@@ -26,7 +26,7 @@ namespace FoundItServer.DTO
         //change to ICollection<PostCommentDTO> PostComments...
         public  ICollection<PostComment> PostComments { get; set; } = new List<PostComment>();
 
-        //Change to PostStatusDto
+        
         public  PostStatusDTO? Status { get; set; }
 
         public PostDTO() { }

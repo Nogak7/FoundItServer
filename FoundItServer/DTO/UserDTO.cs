@@ -15,10 +15,36 @@ namespace FoundItServer.DTO
         public string Pasword { get; set; } 
         public string UserName { get; set; } 
 
-        public virtual ICollection<Community> Communities { get; set; } = new List<Community>();
+        public virtual ICollection<CommunityDTO> Communities { get; set; } = new List<CommunityDTO>();
 
-        public virtual ICollection<CommunityMember> CommunityMembers { get; set; } = new List<CommunityMember>();
+       
 
         public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
+
+        public UserDTO(User user)
+        {
+            Id = user.Id;
+            Email = user.Email; 
+            FirstName = user.FirstName; 
+            LastName = user.LastName;   
+            Pasword = user.Pasword; 
+            UserName = user.UserName;   
+           // Communities = user.Communities;
+           foreach (Community c in user.Communities) 
+            {
+                if (c!=null)
+                {
+                    CommunityDTO community = new CommunityDTO(c);
+                    Communities.Add(community);
+                }
+            }
+   
+            Posts = user.Posts; 
+
+        }
+        public User Convert()
+        {
+            return new User { Id = Id, Email = Email, FirstName = FirstName, LastName = LastName, Pasword = Pasword, UserName = UserName, Communities = Communities, Posts = Posts };
+        }
     }
 }
