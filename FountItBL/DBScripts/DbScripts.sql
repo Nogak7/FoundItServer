@@ -89,10 +89,13 @@ GO
 ----Data---
 SET IDENTITY_INSERT [dbo].[Users] ON
 INSERT INTO [dbo].[Users] ([ID], [Email], [FirstName], [LastName], [Pasword], [UserName]) VALUES (1, N'tsss@hhh.com', N'Tal', N'ggg', N'234', N'fggg')
+INSERT INTO [dbo].[Users] ([ID], [Email], [FirstName], [LastName], [Pasword], [UserName]) VALUES (1, N'nk@hhh.com', N'noga', N'kimhi', N'3737', N'nono')
+
 SET IDENTITY_INSERT [dbo].[Users] OFF
 
-
+SET IDENTITY_INSERT [dbo].[PostStatus] ON
 INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (1, N'Waiting For approval')
 INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (2, N'Not Found Yet')
 INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (3, N'Verification')
 INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (4, N'Found')
+SET IDENTITY_INSERT [dbo].[PostStatus] OFF

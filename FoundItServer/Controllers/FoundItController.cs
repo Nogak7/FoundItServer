@@ -29,10 +29,11 @@ namespace FoundItServer.Controllers
         
        [Route ("Register")]
        [HttpPost]
-        public async Task<ActionResult<User>> RegisterAsync([FromBody] User user)
+        public async Task<ActionResult<User>> RegisterAsync([FromBody] UserDTO userDto)
         {
             try
             {
+                User user=userDto.Convert();
                 bool isEmailExist = context.Users.Any(u => (u.Email == user.Email)||(u.UserName == user.UserName));
                 if (isEmailExist == false)
                 {

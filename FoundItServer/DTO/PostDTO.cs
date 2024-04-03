@@ -21,7 +21,7 @@ namespace FoundItServer.DTO
 
         
 
-        public  User? Creator { get; set; }
+        public  UserDTO? Creator { get; set; }
 
         //change to ICollection<PostCommentDTO> PostComments...
         public  ICollection<PostComment> PostComments { get; set; } = new List<PostComment>();
@@ -41,10 +41,10 @@ namespace FoundItServer.DTO
             CreatingDate = p.CreatingDate;
             Location = p.Location;
             //change to UserDto....
-            Creator = p.CreatorNavigation;
+            Creator = new UserDTO(p.CreatorNavigation);
             //change to PostComments Dto....
             PostComments = p.PostComments;
-            //change to statusDto....
+            
             Status = new PostStatusDTO(p.StatusNavigation);
 
         }

@@ -21,6 +21,7 @@ namespace FoundItServer.DTO
 
         public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 
+        public UserDTO() { }
         public UserDTO(User user)
         {
             Id = user.Id;
@@ -31,20 +32,21 @@ namespace FoundItServer.DTO
             UserName = user.UserName;   
            // Communities = user.Communities;
            foreach (Community c in user.Communities) 
-            {
+           {
                 if (c!=null)
                 {
                     CommunityDTO community = new CommunityDTO(c);
                     Communities.Add(community);
                 }
-            }
-   
+           }
+   //foreach convert user post to postdto
             Posts = user.Posts; 
 
         }
         public User Convert()
         {
-            return new User { Id = Id, Email = Email, FirstName = FirstName, LastName = LastName, Pasword = Pasword, UserName = UserName, Communities = Communities, Posts = Posts };
+         return new User { Id = Id, Email = Email, FirstName = FirstName, LastName = LastName, Pasword = Pasword, UserName = UserName };
+          
         }
     }
 }
