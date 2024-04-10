@@ -13,8 +13,8 @@ namespace FoundItServer.DTO
         public string LastName { get; set; } 
 
         public string Pasword { get; set; } 
-        public string UserName { get; set; } 
-
+        public string UserName { get; set; }
+        public string ProfilePicture { get; set; }
         public virtual ICollection<CommunityDTO> Communities { get; set; } = new List<CommunityDTO>();
 
        
@@ -30,6 +30,7 @@ namespace FoundItServer.DTO
             LastName = user.LastName;   
             Pasword = user.Pasword; 
             UserName = user.UserName;   
+            ProfilePicture = user.ProfilePicture;
            // Communities = user.Communities;
            foreach (Community c in user.Communities) 
            {

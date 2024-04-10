@@ -35,7 +35,7 @@ public partial class FoundItDbContext : DbContext
     {
         modelBuilder.Entity<Community>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC07D856CE7B");
+            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC07DBA349AB");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Location).HasMaxLength(250);
@@ -50,7 +50,7 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<CommunityMember>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC077740F74A");
+            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC079B6075EA");
 
             entity.ToTable("CommunityMember");
 
@@ -67,11 +67,10 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<Post>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Post__3214EC0708EBE79B");
+            entity.HasKey(e => e.Id).HasName("PK__Post__3214EC071AB9C6FF");
 
             entity.ToTable("Post");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Context).HasMaxLength(500);
             entity.Property(e => e.CreatingDate).HasColumnType("datetime");
             entity.Property(e => e.Location).HasMaxLength(250);
@@ -89,7 +88,7 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<PostComment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PostComm__3214EC076788FD22");
+            entity.HasKey(e => e.Id).HasName("PK__PostComm__3214EC0759B56D88");
 
             entity.ToTable("PostComment");
 
@@ -108,7 +107,7 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<PostStatus>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PostStat__3214EC079FCDD118");
+            entity.HasKey(e => e.Id).HasName("PK__PostStat__3214EC07FC5DCCF2");
 
             entity.ToTable("PostStatus");
 
@@ -120,7 +119,7 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC27BBF30AF6");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC27FFB648DF");
 
             entity.HasIndex(e => e.Email, "UC_Email").IsUnique();
 
@@ -129,6 +128,7 @@ public partial class FoundItDbContext : DbContext
             entity.Property(e => e.FirstName).HasMaxLength(30);
             entity.Property(e => e.LastName).HasMaxLength(30);
             entity.Property(e => e.Pasword).HasMaxLength(30);
+            entity.Property(e => e.ProfilePicture).HasMaxLength(200);
             entity.Property(e => e.UserName).HasMaxLength(30);
         });
 
