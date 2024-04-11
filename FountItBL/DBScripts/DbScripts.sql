@@ -1,5 +1,6 @@
 ﻿
 --scaffold-dbcontext "Server=localhost\sqlexpress;Database=FoundItDB;Trusted_Connection=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models –force
+--scaffold-dbcontext "Server=(localdb)\MSSQLLocalDB;Database=FoundItDB;Trusted_Connection=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models –force
 
 Use master
 
