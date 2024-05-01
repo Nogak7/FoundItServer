@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using FoundItServer.DTO;
 using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
+using System.Data.Common;
 
 namespace FoundItServer.Controllers
 {
@@ -65,7 +66,7 @@ namespace FoundItServer.Controllers
                 else
                     return Conflict(user);
             }
-            catch (Exception ex) { }
+            catch (Exception ex) { Console.WriteLine(ex.Message    ); }
             return BadRequest();
         }
 
@@ -133,9 +134,28 @@ namespace FoundItServer.Controllers
             return BadRequest();
         }
 
+    
+
+    [Route("GetUserPostsPics")]
+    [HttpGet]
+    public async Task<ActionResult<List<string>>>GetUserPostsPics([FromQuery]UserDTO user)
+    {
+            try
+            {
+                List<string> postpics = new List<string>();
+                var a = context.Posts.Where(x => x.Creator == user.Id).ToList();
+                foreach (var post in a)
+                {
+                    postpics.Add(post.Picture);
+                }
+                return Ok(postpics);
+            }
+            catch (Exception ex) { }
+            return BadRequest();
+
+
     }
-
-
+}
 
     #endregion
 }
