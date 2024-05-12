@@ -101,9 +101,24 @@ namespace FoundItServer.Controllers
 
 
 
+        [Route("SearchItem")]
+        [HttpPost]
+        public async Task<ActionResult<List<Post>>> SearchItem([FromBody]string discription)
+        {
+            try
+            {
+                var posts = context.Posts.Where(u => u.Context.Contains(discription) || u.Location.Contains(discription) || u.Context.Contains(discription) || u.Theme.Contains(discription)).ToList();
+                if (posts.Count != 0)
+                {
+                    return Ok(posts);
+                }
+            }
+            catch (Exception ex) { }
 
+            return BadRequest();    
+        }
 
-        [Route("UploadFile")]
+            [Route("UploadFile")]
         [HttpPost]
         public async Task<IActionResult> UploadFile(IFormFile file, [FromForm] string user)
         {
