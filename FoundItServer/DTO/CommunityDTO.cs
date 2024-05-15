@@ -13,15 +13,15 @@ namespace FoundItServer.DTO
         public string? Location { get; set; }
 
         public virtual ICollection<UserDTO> CommunityMembers { get; set; } = new List<UserDTO>();
-
-        public virtual User? Manager { get; set; }
+        public int Manager { get; set; }
+        //public virtual User? Manager { get; set; }
         public CommunityDTO() { }   
         public CommunityDTO(Community community)
         {
             this.Id = community.Id; 
             this.Name = community.Name;
             this.Location = community.Location;
-            this.Manager = community.ManagerNavigation;
+            this.Manager = community.ManagerNavigation.Id;
             foreach(var c in community.CommunityMembers) 
             {
                 if (c != null)
@@ -38,7 +38,7 @@ namespace FoundItServer.DTO
                 Id = this.Id,
                 Name = this.Name,
                 Location = this.Location,
-                Manager = this.Manager.Id,
+                Manager = this.Manager,
                 CommunityMembers=new List<CommunityMember>()
 
             };

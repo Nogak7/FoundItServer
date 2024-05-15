@@ -24,7 +24,7 @@ namespace FoundItServer.DTO
         public  UserDTO? Creator { get; set; }
 
         //change to ICollection<PostCommentDTO> PostComments...
-        public  ICollection<PostComment> PostComments { get; set; } = new List<PostComment>();
+        public  List<PostCommentDTO> PostComments { get; set; } = new List<PostCommentDTO>();
 
         
         public  PostStatusDTO? Status { get; set; }
@@ -42,8 +42,14 @@ namespace FoundItServer.DTO
             Location = p.Location;
             //change to UserDto....
             Creator = new UserDTO(p.CreatorNavigation);
+           
             //change to PostComments Dto....
-            PostComments = p.PostComments;
+
+            //foreach (var item in p.PostComments)
+            //{
+            //   PostComments.Add(new PostCommentDTO(item));
+            //}
+           
             
             Status = new PostStatusDTO(p.StatusNavigation);
 
@@ -51,10 +57,10 @@ namespace FoundItServer.DTO
         public Post Convert()
         {
             var post= new Post { Id = Id, Theme = Theme, Context = Context, FoundItem = FoundItem, CreatingDate = CreatingDate, Location = Location, Picture = Picture, Creator = Creator.Id, Status = Status.Id };
-            foreach(var item in PostComments) 
-            {
-                //post.PostComments.Add(item.Convert());
-            }
+            //foreach (var item in PostComments)
+            //{
+            //    post.PostComments.Add(item.Convert());
+            //}
             return post;
         }
 

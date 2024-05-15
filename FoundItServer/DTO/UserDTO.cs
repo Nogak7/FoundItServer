@@ -15,11 +15,11 @@ namespace FoundItServer.DTO
         public string Pasword { get; set; } 
         public string UserName { get; set; }
         public string ProfilePicture { get; set; }
-        public virtual ICollection<CommunityDTO> Communities { get; set; } = new List<CommunityDTO>();
+        //public virtual ICollection<CommunityDTO> Communities { get; set; } = new List<CommunityDTO>();
 
        
 
-        public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
+       // public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 
         public UserDTO() { }
         public UserDTO(User user)
@@ -32,16 +32,16 @@ namespace FoundItServer.DTO
             UserName = user.UserName;   
             ProfilePicture = user.ProfilePicture;
            // Communities = user.Communities;
-           foreach (Community c in user.Communities) 
-           {
-                if (c!=null)
-                {
-                    CommunityDTO community = new CommunityDTO(c);
-                    Communities.Add(community);
-                }
-           }
+           //foreach (Community c in user.Communities) 
+           //{
+           //     if (c!=null)
+           //     {
+           //         CommunityDTO community = new CommunityDTO(c);
+           //         Communities.Add(community);
+           //     }
+           //}
    //foreach convert user post to postdto
-            Posts = user.Posts; 
+            //Posts = user.Posts; 
 
         }
         public User Convert()

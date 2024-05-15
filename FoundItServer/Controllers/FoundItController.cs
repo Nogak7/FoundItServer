@@ -102,8 +102,8 @@ namespace FoundItServer.Controllers
 
 
         [Route("SearchItem")]
-        [HttpPost]
-        public async Task<ActionResult<List<Post>>> SearchItem([FromBody]string discription)
+        [HttpGet]
+        public async Task<ActionResult<List<Post>>> SearchItem([FromQuery]string discription)
         {
             try
             {
