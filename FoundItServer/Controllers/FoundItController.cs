@@ -50,7 +50,7 @@ namespace FoundItServer.Controllers
         }
         [Route("LogIn")]
         [HttpPost]
-        public async Task<ActionResult<User>> LogInAsync([FromBody] LoginDto user)
+        public async Task<ActionResult> LogInAsync([FromBody] LoginDto user)
         {
             //
             try
@@ -61,10 +61,10 @@ namespace FoundItServer.Controllers
                     User user1 = context.Users.Where( u=> u.UserName == user.UserName).FirstOrDefault();
                     bool IsUserMatchPassword = (user.Pasword == user1.Pasword);
                     if (IsUserMatchPassword)                                         
-                        return Ok(user);                    
+                        return Ok(new UserDTO(user1));                    
                 }
                 else
-                    return Conflict(user);
+                    return Conflict();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message    ); }
             return BadRequest();
@@ -78,12 +78,13 @@ namespace FoundItServer.Controllers
             {
                 var p=JsonSerializer.Deserialize<PostDTO>(post);
                 p.Picture = string.Empty;
-                context.Posts.Add(p.Convert());
+                Post dbpost = p.Convert();
+                context.Posts.Add(dbpost);
                 context.SaveChanges();
 
                 if (file == null || file.Length == 0)
                     return BadRequest("no image file");
-                string filename = $"{p.Id}_postImage.jpg";
+                string filename = $"{dbpost.Id}_postImage.jpg";
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/Images",filename);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -153,17 +154,14 @@ namespace FoundItServer.Controllers
 
     [Route("GetUserPostsPics")]
     [HttpGet]
-    public async Task<ActionResult<List<string>>>GetUserPostsPics([FromQuery]UserDTO user)
+    public async Task<ActionResult<List<string>>>GetUserPostsPics([FromQuery]int userid)
     {
             try
             {
-                List<string> postpics = new List<string>();
-                var a = context.Posts.Where(x => x.Creator == user.Id).ToList();
-                foreach (var post in a)
-                {
-                    postpics.Add(post.Picture);
-                }
-                return Ok(postpics);
+              //  List<string> postpics = new List<string>();
+                var a = context.Posts.Where(x => x.Creator == userid&&!string.IsNullOrEmpty(x.Picture)).Select(pp=>pp.Picture);
+                
+                return Ok(a.ToList());
             }
             catch (Exception ex) { }
             return BadRequest();
