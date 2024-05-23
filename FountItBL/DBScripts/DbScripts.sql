@@ -87,6 +87,10 @@ CREATE TABLE [dbo].[PostComment]
     CONSTRAINT [FK_PostComment_PostComment] FOREIGN KEY ([Postcomment]) REFERENCES [PostComment]([Id])
 )
 GO
+INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (1, N'Waiting For approval')
+INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (2, N'Not Found Yet')
+INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (3, N'Verification')
+INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (4, N'Found')
 
 ----Data---
 SET IDENTITY_INSERT [dbo].[Users] ON
@@ -99,7 +103,3 @@ SET IDENTITY_INSERT [dbo].[Post] ON
 INSERT INTO [dbo].[Post] ([Id], [Theme], [Context], [FoundItem], [Picture], [Creator], [CreatingDate], [Location], [Status]) VALUES (1, N'cat', N'cat in livingroom', 0, N'1_postimage.jpg', 2, N'2009-06-23 19:30:20', N'london', 2)
 SET IDENTITY_INSERT [dbo].[Post] OFF
 
-INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (1, N'Waiting For approval')
-INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (2, N'Not Found Yet')
-INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (3, N'Verification')
-INSERT INTO [dbo].[PostStatus] ([Id], [Poststatus]) VALUES (4, N'Found')
