@@ -168,7 +168,38 @@ namespace FoundItServer.Controllers
 
 
     }
-}
+        [Route("GetUserPosts")]
+        [HttpGet]
+        public async Task<ActionResult> GetUserPosts(int userId)
+        {
+            try
+            {
+                var posts = await context.GetPostByUser(userId);
+               
+                var resultposts = posts.Select(p => new PostDTO(p));
+                return Ok(resultposts.ToList());
+
+            }
+            catch (Exception ex) { }
+            return BadRequest();
+        }
+
+        [Route("GetPostCommentsResponses")]
+        [HttpGet]
+        public async Task<ActionResult> GetPostCommentsResponses(int userId)
+        {
+            try
+            {
+                var postComments = await context.GetPostCommentsResponses(userId);
+
+                var resultpostcomments = postComments.Select(p => new PostCommentDTO(p));
+                return Ok(resultpostcomments.ToList());
+
+            }
+            catch (Exception ex) { }
+            return BadRequest();
+        }
+    }
 
     #endregion
 }
