@@ -15,7 +15,7 @@ namespace FoundItServer.Controllers
         #region Add connection to the db context using dependency injection 
 
         FoundItDbContext context;
-
+#endregion
              public FoundItController(FoundItDbContext context)
              {
                 this.context = context;
@@ -104,16 +104,19 @@ namespace FoundItServer.Controllers
 
         [Route("SearchItem")]
         [HttpGet]
-        public async Task<ActionResult<List<Post>>> SearchItem([FromQuery]string discription)
+        public async Task<ActionResult<List<PostDTO>>> SearchItem([FromQuery]string discription)
         {
             try
             {
-               
-                var posts = context.Posts.Where(u => u.Context.Contains(discription) || u.Location.Contains(discription) || u.Context.Contains(discription) || u.Theme.Contains(discription)).ToList();
+                List<PostDTO> postsDTO = new List<PostDTO>();
+                var posts = await context.GetPostDiscription(discription);
                 if (posts.Count != 0)
                 {
-                    
-                    return Ok(posts);
+                    foreach (var post in posts)
+                    {
+                        postsDTO.Add(new PostDTO(post));
+                    }
+                    return Ok(postsDTO);
                 }
             }
             catch (Exception ex) { }
@@ -121,7 +124,7 @@ namespace FoundItServer.Controllers
             return BadRequest();    
         }
 
-            [Route("UploadFile")]
+       [Route("UploadFile")]
         [HttpPost]
         public async Task<IActionResult> UploadFile(IFormFile file, [FromForm] string user)
         {
@@ -153,7 +156,7 @@ namespace FoundItServer.Controllers
         }
 
 
-    [Route("GetUserPostsPics")]
+    [Route("GetPostsByPic")]
     [HttpGet]
     public async Task<ActionResult<Post>> GetPostsByPic([FromQuery] string postImage)
         {
@@ -215,7 +218,7 @@ namespace FoundItServer.Controllers
         }
     }
 
-    #endregion
+    
 }
     
 
