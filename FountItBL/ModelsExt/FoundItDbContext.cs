@@ -21,4 +21,10 @@ public partial class FoundItDbContext : DbContext
         var posts = await this.Posts.AsNoTracking().Where(p=> p.Creator == userId && p.Status!=4).Include(p=>p.StatusNavigation).Include(p=>p.CreatorNavigation).ToListAsync();    
         return posts;   
     }
- }
+    public async Task<ICollection<Post>> GetPostdiscription(string discription)
+    {
+        var posts = await this.Posts.AsNoTracking().Where(p =>  p.Context.Contains(discription) || p.Location.Contains(discription) || p.Context.Contains(discription) || p.Theme.Contains(discription)).Include(p => p.StatusNavigation).Include(p => p.CreatorNavigation).ToListAsync();
+        return posts;
+    }
+
+}

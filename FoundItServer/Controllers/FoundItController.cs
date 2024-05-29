@@ -108,9 +108,11 @@ namespace FoundItServer.Controllers
         {
             try
             {
+               
                 var posts = context.Posts.Where(u => u.Context.Contains(discription) || u.Location.Contains(discription) || u.Context.Contains(discription) || u.Theme.Contains(discription)).ToList();
                 if (posts.Count != 0)
                 {
+                    
                     return Ok(posts);
                 }
             }
@@ -150,7 +152,19 @@ namespace FoundItServer.Controllers
             return BadRequest();
         }
 
-    
+
+    [Route("GetUserPostsPics")]
+    [HttpGet]
+    public async Task<ActionResult<Post>> GetPostsByPic([FromQuery] string postImage)
+        {
+            try 
+            {
+                var p = context.Posts.Where(x => x.Picture == postImage);
+                return Ok(p);
+            }
+            catch (Exception ex) { }
+            return BadRequest();
+        }
 
     [Route("GetUserPostsPics")]
     [HttpGet]
