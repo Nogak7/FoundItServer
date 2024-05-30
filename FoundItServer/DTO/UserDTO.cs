@@ -28,7 +28,7 @@ namespace FoundItServer.DTO
             Email = user.Email; 
             FirstName = user.FirstName; 
             LastName = user.LastName;   
-            Pasword = user.Pasword; 
+            //Pasword = user.Pasword; 
             UserName = user.UserName;   
             ProfilePicture = user.ProfilePicture;
            // Communities = user.Communities;

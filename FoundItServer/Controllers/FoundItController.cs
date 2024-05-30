@@ -158,12 +158,18 @@ namespace FoundItServer.Controllers
 
     [Route("GetPostsByPic")]
     [HttpGet]
-    public async Task<ActionResult<Post>> GetPostsByPic([FromQuery] string postImage)
+    public async Task<ActionResult<PostDTO>> GetPostsByPic([FromQuery] string postImage)
         {
             try 
             {
-                var p = context.Posts.Where(x => x.Picture == postImage);
-                return Ok(p);
+                var address = postImage.Split('/');
+                PostDTO postDTO=null;
+                var p = await context.GetPostByImage(address[address.Length - 1]);
+                //var p = context.Posts.Where(x => x.Picture == ).FirstOrDefault();
+                if(p != null)   
+                postDTO = new PostDTO(p);
+                
+                return Ok(postDTO);
             }
             catch (Exception ex) { }
             return BadRequest();
