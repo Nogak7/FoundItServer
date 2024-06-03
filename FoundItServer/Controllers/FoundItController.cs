@@ -5,6 +5,8 @@ using FoundItServer.DTO;
 using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
 using System.Data.Common;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 
 namespace FoundItServer.Controllers
 {
@@ -15,11 +17,11 @@ namespace FoundItServer.Controllers
         #region Add connection to the db context using dependency injection 
 
         FoundItDbContext context;
-#endregion
-             public FoundItController(FoundItDbContext context)
-             {
-                this.context = context;
-             }
+        #endregion
+        public FoundItController(FoundItDbContext context)
+        {
+            this.context = context;
+        }
 
         [Route("Test")]
         [HttpGet]
@@ -27,15 +29,15 @@ namespace FoundItServer.Controllers
         {
             return "this is Noga Server";
         }
-        
-       [Route ("Register")]
-       [HttpPost]
+
+        [Route("Register")]
+        [HttpPost]
         public async Task<ActionResult<User>> RegisterAsync([FromBody] UserDTO userDto)
         {
             try
             {
-                User user=userDto.Convert();
-                bool isEmailExist = context.Users.Any(u => (u.Email == user.Email)||(u.UserName == user.UserName));
+                User user = userDto.Convert();
+                bool isEmailExist = context.Users.Any(u => (u.Email == user.Email) || (u.UserName == user.UserName));
                 if (isEmailExist == false)
                 {
                     context.Users.Add(user);
@@ -58,16 +60,33 @@ namespace FoundItServer.Controllers
                 bool IsUserExist = context.Users.Any(u => (u.UserName == user.UserName));
                 if (IsUserExist)
                 {
-                    User user1 = context.Users.Where( u=> u.UserName == user.UserName).FirstOrDefault();
+                    User user1 = context.Users.Where(u => u.UserName == user.UserName).FirstOrDefault();
                     bool IsUserMatchPassword = (user.Pasword == user1.Pasword);
-                    if (IsUserMatchPassword)                                         
-                        return Ok(new UserDTO(user1));                    
+                    if (IsUserMatchPassword)
+                        return Ok(new UserDTO(user1));
                 }
                 else
                     return Conflict();
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message    ); }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
             return BadRequest();
+        }
+        [Route("AddNewComment")]
+        [HttpPost]
+        public async Task<List<PostComment>> AddNewComment([FromQuery] int postid, string newComment)
+        {
+            try
+            {
+                var nc = JsonSerializer.Deserialize<string>(newComment);
+                PostComment pc = new PostComment() {Post = postid, Comment = newComment, Date = DateTime.Now, };
+                context.PostComments.Add(pc);
+                context.SaveChanges();
+                List<PostComment> postComments = context.PostComments.Where(pc => pc.Post == postid).ToList();
+                return postComments;
+            }
+            catch (Exception ex) { }
+            return null;
+
         }
 
         [Route("CreateNewPost")]
@@ -76,7 +95,7 @@ namespace FoundItServer.Controllers
         {
             try
             {
-                var p=JsonSerializer.Deserialize<PostDTO>(post);
+                var p = JsonSerializer.Deserialize<PostDTO>(post);
                 p.Picture = string.Empty;
                 Post dbpost = p.Convert();
                 context.Posts.Add(dbpost);
@@ -85,7 +104,7 @@ namespace FoundItServer.Controllers
                 if (file == null || file.Length == 0)
                     return BadRequest("no image file");
                 string filename = $"{dbpost.Id}_postImage.jpg";
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/Images",filename);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", filename);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
@@ -95,16 +114,16 @@ namespace FoundItServer.Controllers
 
 
             }
-                
+
             catch (Exception ex) { }
             return BadRequest();
         }
 
-        
+
 
         [Route("SearchItem")]
         [HttpGet]
-        public async Task<ActionResult<List<PostDTO>>> SearchItem([FromQuery]string discription)
+        public async Task<ActionResult<List<PostDTO>>> SearchItem([FromQuery] string discription)
         {
             try
             {
@@ -121,10 +140,10 @@ namespace FoundItServer.Controllers
             }
             catch (Exception ex) { }
 
-            return BadRequest();    
+            return BadRequest();
         }
 
-       [Route("UploadFile")]
+        [Route("UploadFile")]
         [HttpPost]
         public async Task<IActionResult> UploadFile(IFormFile file, [FromForm] string user)
         {
@@ -156,41 +175,41 @@ namespace FoundItServer.Controllers
         }
 
 
-    [Route("GetPostsByPic")]
-    [HttpGet]
-    public async Task<ActionResult<PostDTO>> GetPostsByPic([FromQuery] string postImage)
+        [Route("GetPostsByPic")]
+        [HttpGet]
+        public async Task<ActionResult<PostDTO>> GetPostsByPic([FromQuery] string postImage)
         {
-            try 
+            try
             {
                 var address = postImage.Split('/');
-                PostDTO postDTO=null;
+                PostDTO postDTO = null;
                 var p = await context.GetPostByImage(address[address.Length - 1]);
                 //var p = context.Posts.Where(x => x.Picture == ).FirstOrDefault();
-                if(p != null)   
-                postDTO = new PostDTO(p);
-                
+                if (p != null)
+                    postDTO = new PostDTO(p);
+
                 return Ok(postDTO);
             }
             catch (Exception ex) { }
             return BadRequest();
         }
 
-    [Route("GetUserPostsPics")]
-    [HttpGet]
-    public async Task<ActionResult<List<string>>>GetUserPostsPics([FromQuery]int userid)
-    {
+        [Route("GetUserPostsPics")]
+        [HttpGet]
+        public async Task<ActionResult<List<string>>> GetUserPostsPics([FromQuery] int userid)
+        {
             try
             {
-              //  List<string> postpics = new List<string>();
-                var a = context.Posts.Where(x => x.Creator == userid&&!string.IsNullOrEmpty(x.Picture)).Select(pp=>pp.Picture);
-                
+                //  List<string> postpics = new List<string>();
+                var a = context.Posts.Where(x => x.Creator == userid && !string.IsNullOrEmpty(x.Picture)).Select(pp => pp.Picture);
+
                 return Ok(a.ToList());
             }
             catch (Exception ex) { }
             return BadRequest();
 
 
-    }
+        }
         [Route("GetUserPosts")]
         [HttpGet]
         public async Task<ActionResult> GetUserPosts(int userId)
@@ -198,7 +217,7 @@ namespace FoundItServer.Controllers
             try
             {
                 var posts = await context.GetPostByUser(userId);
-               
+
                 var resultposts = posts.Select(p => new PostDTO(p));
                 return Ok(resultposts.ToList());
 
@@ -221,6 +240,33 @@ namespace FoundItServer.Controllers
             }
             catch (Exception ex) { }
             return BadRequest();
+        }
+
+        [Route("UpdateProfilePicture")]
+        [HttpPost]
+        public async Task<ActionResult> UpdateProfilePicture([FromQuery] int userid, IFormFile file)
+        {
+            try
+            {
+                var u = context.Users.Where(user => user.Id == userid).FirstOrDefault();
+                if (u != null)
+                {
+                    if (file == null || file.Length == 0)
+                        return BadRequest("no image file");
+                    string filename = $"{userid}_profilepicture.jpg";
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", filename);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                    u.ProfilePicture = filename;
+                    context.SaveChanges();
+                    return Ok(filename);
+                }
+            }
+            catch (Exception ex) { }
+            return BadRequest();
+
         }
     }
 
