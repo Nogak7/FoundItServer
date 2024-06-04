@@ -78,11 +78,11 @@ CREATE TABLE [dbo].[Post] (
 GO
 CREATE TABLE [dbo].[PostComment]
 (
-	[Id] INT NOT NULL PRIMARY KEY, 
-    [Post] INT NULL, 
+    [Id]     INT   IDENTITY(1,1)         NOT NULL,    [Post] INT NULL, 
     [Comment] NVARCHAR(MAX) NULL, 
     [Date] DATETIME NULL, 
     [Postcomment] INT NULL, 
+    PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_PostComment_Post] FOREIGN KEY ([Post]) REFERENCES [Post]([Id]), 
     CONSTRAINT [FK_PostComment_PostComment] FOREIGN KEY ([Postcomment]) REFERENCES [PostComment]([Id])
 )

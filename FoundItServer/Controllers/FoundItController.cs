@@ -7,6 +7,8 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Data.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoundItServer.Controllers
 {
@@ -73,16 +75,21 @@ namespace FoundItServer.Controllers
         }
         [Route("AddNewComment")]
         [HttpPost]
-        public async Task<List<PostComment>> AddNewComment([FromQuery] int postid, string newComment)
+        public async Task<List<PostCommentDTO>> AddNewComment([FromQuery] int postid,[FromBody] PostCommentDTO newComment)
         {
             try
             {
-                var nc = JsonSerializer.Deserialize<string>(newComment);
-                PostComment pc = new PostComment() {Post = postid, Comment = newComment, Date = DateTime.Now, };
-                context.PostComments.Add(pc);
+               // var nc = JsonSerializer.Deserialize<PostCommentDTO>(newComment);
+                PostComment dbpostcomment = newComment.Convert();
+                context.PostComments.Add(dbpostcomment);
                 context.SaveChanges();
                 List<PostComment> postComments = context.PostComments.Where(pc => pc.Post == postid).ToList();
-                return postComments;
+                List < PostCommentDTO > pcDTO = new List<PostCommentDTO>();
+                foreach (var postcomment in postComments) 
+                {
+                    pcDTO.Add(new PostCommentDTO(postcomment));
+                }
+                return pcDTO;
             }
             catch (Exception ex) { }
             return null;

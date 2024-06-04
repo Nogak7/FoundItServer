@@ -35,7 +35,7 @@ public partial class FoundItDbContext : DbContext
     {
         modelBuilder.Entity<Community>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC07DBA349AB");
+            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC076FAF19F6");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Location).HasMaxLength(250);
@@ -50,7 +50,7 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<CommunityMember>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC079B6075EA");
+            entity.HasKey(e => e.Id).HasName("PK__Communit__3214EC071EC566C5");
 
             entity.ToTable("CommunityMember");
 
@@ -67,7 +67,7 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<Post>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Post__3214EC071AB9C6FF");
+            entity.HasKey(e => e.Id).HasName("PK__Post__3214EC0794C1512F");
 
             entity.ToTable("Post");
 
@@ -88,11 +88,10 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<PostComment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PostComm__3214EC0759B56D88");
+            entity.HasKey(e => e.Id).HasName("PK__PostComm__3214EC07790B1BBD");
 
             entity.ToTable("PostComment");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Date).HasColumnType("datetime");
             entity.Property(e => e.Postcomment1).HasColumnName("Postcomment");
 
@@ -107,7 +106,7 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<PostStatus>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PostStat__3214EC07FC5DCCF2");
+            entity.HasKey(e => e.Id).HasName("PK__PostStat__3214EC071E814903");
 
             entity.ToTable("PostStatus");
 
@@ -119,7 +118,7 @@ public partial class FoundItDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC27FFB648DF");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC272E77C3A5");
 
             entity.HasIndex(e => e.Email, "UC_Email").IsUnique();
 
