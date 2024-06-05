@@ -28,7 +28,7 @@ namespace FoundItServer.DTO
         }
         public PostComment Convert()
         {
-            return new PostComment { Id = Id, Post = Post, Date=Date,Postcomment1 = Postcomment1  };
+            return new PostComment { Id = Id, Post = Post,Comment=Comment, Date=Date,Postcomment1 = Postcomment1  };
         }
 
     }

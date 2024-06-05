@@ -24,7 +24,7 @@ namespace FoundItServer.DTO
         public  UserDTO? Creator { get; set; }
 
         //change to ICollection<PostCommentDTO> PostComments...
-        public  List<PostCommentDTO> PostComments { get; set; } = new List<PostCommentDTO>();
+       // public  List<PostCommentDTO> PostComments { get; set; } = new List<PostCommentDTO>();
 
         
         public  PostStatusDTO? Status { get; set; }

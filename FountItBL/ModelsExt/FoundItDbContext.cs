@@ -29,7 +29,7 @@ public partial class FoundItDbContext : DbContext
 
     public async Task<Post> GetPostByImage(string imageName)
     {
-        var post =  await this.Posts.AsNoTracking().Where(p => p.Picture == imageName).Include(p => p.StatusNavigation).Include(p => p.CreatorNavigation).FirstOrDefaultAsync();
+        var post =  await this.Posts.AsNoTracking().Where(p => p.Picture == imageName).Include(p => p.StatusNavigation).Include(p => p.CreatorNavigation).Include(p => p.StatusNavigation).FirstOrDefaultAsync();
         return post;
     }
 }

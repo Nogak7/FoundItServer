@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace FoundItServer.Controllers
 {
@@ -75,17 +76,17 @@ namespace FoundItServer.Controllers
         }
         [Route("AddNewComment")]
         [HttpPost]
-        public async Task<List<PostCommentDTO>> AddNewComment([FromQuery] int postid,[FromBody] PostCommentDTO newComment)
+        public async Task<List<PostCommentDTO>> AddNewComment([FromQuery] int postid, [FromBody] PostCommentDTO newComment)
         {
             try
             {
-               // var nc = JsonSerializer.Deserialize<PostCommentDTO>(newComment);
+                // var nc = JsonSerializer.Deserialize<PostCommentDTO>(newComment);
                 PostComment dbpostcomment = newComment.Convert();
                 context.PostComments.Add(dbpostcomment);
                 context.SaveChanges();
                 List<PostComment> postComments = context.PostComments.Where(pc => pc.Post == postid).ToList();
-                List < PostCommentDTO > pcDTO = new List<PostCommentDTO>();
-                foreach (var postcomment in postComments) 
+                List<PostCommentDTO> pcDTO = new List<PostCommentDTO>();
+                foreach (var postcomment in postComments)
                 {
                     pcDTO.Add(new PostCommentDTO(postcomment));
                 }
@@ -103,10 +104,12 @@ namespace FoundItServer.Controllers
             try
             {
                 var p = JsonSerializer.Deserialize<PostDTO>(post);
+
                 p.Picture = string.Empty;
                 Post dbpost = p.Convert();
+                //save post in DB
                 context.Posts.Add(dbpost);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
 
                 if (file == null || file.Length == 0)
                     return BadRequest("no image file");
@@ -116,7 +119,9 @@ namespace FoundItServer.Controllers
                 {
                     await file.CopyToAsync(stream);
                 }
-                p.Picture = filename;
+                dbpost.Picture = filename;
+                await context.SaveChangesAsync();
+
                 return Ok(p);
 
 
@@ -184,6 +189,7 @@ namespace FoundItServer.Controllers
 
         [Route("GetPostsByPic")]
         [HttpGet]
+
         public async Task<ActionResult<PostDTO>> GetPostsByPic([FromQuery] string postImage)
         {
             try
@@ -200,6 +206,23 @@ namespace FoundItServer.Controllers
             catch (Exception ex) { }
             return BadRequest();
         }
+        [Route("GetPostComments")]
+        [HttpGet]
+        public async Task<List<PostCommentDTO>> GetPostComments(int postid)
+        {
+            List<PostCommentDTO> postComments = new List<PostCommentDTO>();
+            try
+            {
+                var comments = await context.PostComments.AsNoTracking().Where(pc => pc.Post == postid).OrderBy(pc => pc.Date).ToListAsync();
+                foreach (var comment in comments)
+                {
+                    postComments.Add(new PostCommentDTO(comment));
+                }
+                return postComments;
+            }
+            catch (Exception ex) { }
+            return null;
+        }
 
         [Route("GetUserPostsPics")]
         [HttpGet]
@@ -208,7 +231,7 @@ namespace FoundItServer.Controllers
             try
             {
                 //  List<string> postpics = new List<string>();
-                var a = context.Posts.Where(x => x.Creator == userid && !string.IsNullOrEmpty(x.Picture)).Select(pp => pp.Picture);
+                var a = await context.Posts.Where(x => x.Creator == userid && !string.IsNullOrEmpty(x.Picture)).Select(pp => pp.Picture).ToListAsync();
 
                 return Ok(a.ToList());
             }
@@ -248,6 +271,20 @@ namespace FoundItServer.Controllers
             catch (Exception ex) { }
             return BadRequest();
         }
+        [Route("ChangePostStatusToFound")]
+        [HttpPost]
+        public async Task<ActionResult> ChangePostStatusToFound([FromQuery] int postid)
+        {
+          try
+          { 
+           var p = context.Posts.Where(p => p.Id == postid).FirstOrDefault();
+            p.Status = 4;
+            context.SaveChanges();
+            return Ok();
+          }
+            catch (Exception ex) { }
+            return BadRequest();
+        }
 
         [Route("UpdateProfilePicture")]
         [HttpPost]
@@ -267,7 +304,7 @@ namespace FoundItServer.Controllers
                         await file.CopyToAsync(stream);
                     }
                     u.ProfilePicture = filename;
-                    context.SaveChanges();
+                   await  context.SaveChangesAsync();
                     return Ok(filename);
                 }
             }
