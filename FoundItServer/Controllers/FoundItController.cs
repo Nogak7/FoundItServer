@@ -80,7 +80,6 @@ namespace FoundItServer.Controllers
         {
             try
             {
-                // var nc = JsonSerializer.Deserialize<PostCommentDTO>(newComment);
                 PostComment dbpostcomment = newComment.Convert();
                 context.PostComments.Add(dbpostcomment);
                 context.SaveChanges();
@@ -197,7 +196,6 @@ namespace FoundItServer.Controllers
                 var address = postImage.Split('/');
                 PostDTO postDTO = null;
                 var p = await context.GetPostByImage(address[address.Length - 1]);
-                //var p = context.Posts.Where(x => x.Picture == ).FirstOrDefault();
                 if (p != null)
                     postDTO = new PostDTO(p);
 
@@ -230,7 +228,6 @@ namespace FoundItServer.Controllers
         {
             try
             {
-                //  List<string> postpics = new List<string>();
                 var a = await context.Posts.Where(x => x.Creator == userid && !string.IsNullOrEmpty(x.Picture)).Select(pp => pp.Picture).ToListAsync();
 
                 return Ok(a.ToList());
@@ -297,7 +294,7 @@ namespace FoundItServer.Controllers
                 {
                     if (file == null || file.Length == 0)
                         return BadRequest("no image file");
-                    string filename = $"{userid}_profilepicture.jpg";
+                    string filename = $"profilepicture_{userid}.jpg";
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", filename);
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
