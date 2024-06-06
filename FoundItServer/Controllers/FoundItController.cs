@@ -282,7 +282,7 @@ namespace FoundItServer.Controllers
             catch (Exception ex) { }
             return BadRequest();
         }
-        //sghujds
+        //sghujdsgg
         [Route("UpdateProfilePicture")]
         [HttpPost]
         public async Task<ActionResult> UpdateProfilePicture([FromQuery] int userid, IFormFile file)
